@@ -12,9 +12,14 @@ const REDIS_URL = process.env.UPSTASH_REDIS_REST_URL;
 const REDIS_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
 const SALT_ROUNDS = parseInt(process.env.BCRYPT_SALT_ROUNDS || '10', 10);
 
+// ⚠️ DEBUG CHECK: These lines will print the actual values Vercel is using to the logs.
+console.log(`Debug Check: REDIS_URL=${REDIS_URL}`);
+console.log(`Debug Check: REDIS_TOKEN_EXISTS=${!!REDIS_TOKEN}`);
+// ⚠️ END DEBUG CHECK ⚠️
+
 if (!REDIS_URL || !REDIS_TOKEN) {
-  // This throw will happen during deployment/build if vars are missing.
-  throw new Error('Upstash Redis REST URL or Token not set.');
+  // We'll throw a specific error so we can easily spot the failure in Vercel logs
+  throw new Error('CRITICAL: Redis config not found in process.env at runtime.');
 }
 
 const redis = new Redis({
