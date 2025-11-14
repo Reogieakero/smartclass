@@ -15,15 +15,16 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Colors = {
-  background: '#FFFFFF', 
-  orangeAccent: '#FF8C00', 
-  redAccent: '#FF3B30', 
-  textPrimary: '#1C1C1C', 
+  background: '#FFFFFF',
+  orangeAccent: '#FF8C00',
+  redAccent: '#FF3B30',
+  textPrimary: '#1C1C1C',
   textSecondary: '#696969',
   inputBackground: '#F7F7F7'
 };
 
-const LoginScreen = ({ onLogin, onSignUpPress }) => {
+const SignUpScreen = ({ onSignUp, onBackToLogin }) => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -36,8 +37,8 @@ const LoginScreen = ({ onLogin, onSignUpPress }) => {
     }).start();
   }, []);
 
-  const handleLogin = () => {
-    if (onLogin) onLogin(email, password);
+  const handleSignUp = () => {
+    if (onSignUp) onSignUp(name, email, password);
   };
 
   return (
@@ -57,8 +58,16 @@ const LoginScreen = ({ onLogin, onSignUpPress }) => {
             />
           </Animated.View>
 
-          <Text style={styles.title}>SMART REMINDER</Text>
-          <Text style={styles.subtitle}>Your daily productivity companion</Text>
+          <Text style={styles.title}>CREATE ACCOUNT</Text>
+          <Text style={styles.subtitle}>Join Smart Reminder today</Text>
+
+          <TextInput
+            style={styles.input}
+            placeholder="Full Name"
+            placeholderTextColor={Colors.textSecondary}
+            value={name}
+            onChangeText={setName}
+          />
 
           <TextInput
             style={styles.input}
@@ -79,27 +88,21 @@ const LoginScreen = ({ onLogin, onSignUpPress }) => {
             secureTextEntry
           />
 
-          <View style={styles.forgotContainer}>
-            <TouchableOpacity>
-              <Text style={styles.forgotText}>Forgot Password?</Text>
-            </TouchableOpacity>
-          </View>
-
-          <TouchableOpacity onPress={handleLogin} style={styles.buttonWrapper}>
+          <TouchableOpacity onPress={handleSignUp} style={styles.buttonWrapper}>
             <LinearGradient
               colors={[Colors.orangeAccent, Colors.redAccent]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.button}
             >
-              <Text style={styles.buttonText}>Login</Text>
+              <Text style={styles.buttonText}>Sign Up</Text>
             </LinearGradient>
           </TouchableOpacity>
 
-          <View style={styles.signupContainer}>
-            <Text style={styles.signupText}>Don't have an account? </Text>
-            <TouchableOpacity onPress={onSignUpPress}>
-              <Text style={styles.signupLink}>Sign Up</Text>
+          <View style={styles.loginContainer}>
+            <Text style={styles.loginText}>Already have an account? </Text>
+            <TouchableOpacity onPress={onBackToLogin}>
+              <Text style={styles.loginLink}>Login</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -120,16 +123,14 @@ const styles = StyleSheet.create({
   title: { fontSize: 32, fontWeight: '700', color: Colors.textPrimary, letterSpacing: 1, marginBottom: 6, textAlign: 'center' },
   subtitle: { fontSize: 16, color: Colors.textSecondary, marginBottom: 32, textAlign: 'center' },
   input: { width: '100%', backgroundColor: Colors.inputBackground, color: Colors.textPrimary, borderRadius: 14, paddingHorizontal: 18, paddingVertical: 16, fontSize: 16, marginBottom: 16, shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 4, elevation: 2 },
-  forgotContainer: { width: '100%', alignItems: 'flex-end', marginBottom: 24 },
-  forgotText: { color: Colors.redAccent, fontWeight: '500', fontSize: 14 },
   buttonWrapper: { width: '100%', borderRadius: 14, overflow: 'hidden', marginBottom: 20 },
   button: { paddingVertical: 16, alignItems: 'center', borderRadius: 14 },
   buttonText: { color: '#FFFFFF', fontSize: 18, fontWeight: '700' },
-  signupContainer: { flexDirection: 'row', alignItems: 'center' },
-  signupText: { color: Colors.textSecondary, fontSize: 14 },
-  signupLink: { color: Colors.orangeAccent, fontSize: 14, fontWeight: '600' },
+  loginContainer: { flexDirection: 'row', alignItems: 'center' },
+  loginText: { color: Colors.textSecondary, fontSize: 14 },
+  loginLink: { color: Colors.orangeAccent, fontSize: 14, fontWeight: '600' },
   footer: { paddingBottom: 10 },
   footerText: { fontSize: 12, color: Colors.textSecondary, textAlign: 'center' }
 });
 
-export default LoginScreen;
+export default SignUpScreen;

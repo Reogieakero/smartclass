@@ -1,27 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import SplashScreen from './screens/SplashScreen'; 
+import SplashScreen from './screens/SplashScreen';
 import LoginScreen from './screens/LoginScreen';
-import HomeScreen from './screens/HomeScreen';   
+import SignUpScreen from './screens/SignUpScreen';
+import HomeScreen from './screens/HomeScreen';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [currentScreen, setCurrentScreen] = useState('login'); // 'login' | 'signup' | 'home'
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 5000); 
+    setTimeout(() => setIsLoading(false), 3000); // splash for 3 sec
   }, []);
 
-  if (isLoading) {
-    return <SplashScreen />;
+  if (isLoading) return <SplashScreen />;
+
+  if (currentScreen === 'login') {
+    return (
+      <LoginScreen
+        onLogin={() => setCurrentScreen('home')}
+        onSignUpPress={() => setCurrentScreen('signup')}
+      />
+    );
   }
 
+  if (currentScreen === 'signup') {
+    return (
+      <SignUpScreen
+        onSignUp={() => setCurrentScreen('home')}
+        onBackToLogin={() => setCurrentScreen('login')}
+      />
+    );
+  }
 
-  return (
-    <>
-      <LoginScreen />
-    </>
-  );
+  if (currentScreen === 'home') {
+    return <HomeScreen />;
+  }
+
+  return null;
 };
 
 export default App;
